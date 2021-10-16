@@ -13,6 +13,7 @@ const userController = {
             .populate({
                 path: 'thoughts',
                 select: '-__v',
+                sort: { _id: -1 }
             })
             // exclude user __v key
             .select('-__v')
@@ -25,6 +26,10 @@ const userController = {
     // destructure the req object into the params object
     getUserById({ params }, res) {
         User.findById(params.userId)
+            .populate({
+                path: 'friends',
+                select: '-__v'
+            })
             .populate({
                 path: 'thoughts',
                 select: '-__v',
