@@ -33,7 +33,7 @@ const thoughtController = {
         // Create thought first, then update User 
         Thought.create(body)
             .then(dbThoughtData => {
-                User.findOneByIdAndUpdate(
+                return User.findByIdAndUpdate(
                     params.userId,
                     { $push: { thoughts: dbThoughtData._id } },
                     { new: true })
