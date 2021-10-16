@@ -19,11 +19,11 @@ const ReactionSchema = new Schema({
     createdAt: {
         type: Date,
         default: dayjs(),
-        get: createdAtVal => dayJs(createdAtVal).format('hh:mmA - MM/DD/YYYY')
+        get: createdAtVal => dayjs(createdAtVal).format('hh:mmA - MM/DD/YYYY')
     }
 },
 {
-    toJson:{
+    toJSON:{
         getters: true
     },
     id: false
