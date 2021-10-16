@@ -71,7 +71,7 @@ const userController = {
     },
     // destructure params object for the userid
     deleteUser({ params }, res) {
-        findByIdAndDelete(params.id)
+        User.findByIdAndDelete(params.userId)
         .then(dbUserData => {
             dbUserData ? 
             res.status(200).json(dbUserData) :

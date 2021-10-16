@@ -7,4 +7,5 @@ router.use('/api', apiRoutes);
 router.use((req, res) => {
     res.status(404).send('<h1>Nobody here but us... cats? 🐈 🐈 🐈 </h1>')
 });
+
 module.exports = router; 
