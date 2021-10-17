@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const userController = {
     getAllUsers(req, res) {
@@ -82,17 +82,36 @@ const userController = {
             })
     },
     // destructure params object for the userid
+    // deleteUser({ params }, res) {
+    //     User.findByIdAndDelete(params.userId)
+    //         .then(dbUserData => {
+    //             dbUserData ?
+    //                 res.status(200).json(dbUserData) :
+    //                 res.status(404).json({ message: "No user found with that id!" })
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             res.status(500).json(err);
+    //         })
+    // },
+
     deleteUser({ params }, res) {
-        User.findByIdAndDelete(params.userId)
-            .then(dbUserData => {
-                dbUserData ?
-                    res.status(200).json(dbUserData) :
-                    res.status(404).json({ message: "No user found with that id!" })
+        User.findbyIdAndDelete(params.userId)
+            .then((dbUserData) => {
+                if (dbUserData) {
+                    const username = dbUserData.username;
+                    return Thought.deleteMany({ username: username })
+                } else {
+                    res.status(404).json({ message: "No user found with that id!" });
+                }
+            })
+            .then(dbThoughtData => {
+                dbThoughtData && res.status(200).json(dbThoughtData); 
             })
             .catch(err => {
                 console.log(err);
                 res.status(500).json(err);
-            })
+            });
     },
 
     // Friend Functions
