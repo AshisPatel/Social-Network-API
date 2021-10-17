@@ -98,7 +98,16 @@ const userController = {
 
     async deleteUser({ params }, res) {
         let username = "";
-        await User.findById(params.userId).then(dbUserData => { username = dbUserData.username });
+        await User.findById(params.userId)
+        .then(dbUserData => { 
+            dbUserData ? 
+            username = dbUserData.username :
+            res.status(404).json({message: "No user with that id exists!" });
+        });
+
+        if(!username) {
+            return; 
+        }
       
         User.findByIdAndDelete(params.userId)
             .then((dbUserData) => {
@@ -121,7 +130,9 @@ const userController = {
                 }
             })
             .then(dbUserData => {
-                res.status(200).json({ message: `${username} has been deleted, along with their thoughts and reactions.`});
+                dbUserData ? 
+                res.status(200).json({ message: `${username} has been deleted, along with their thoughts and reactions.`}) :
+                res.status(404).json({ message: "No user with that id exists!"}); 
             })
             .catch(err => {
                 console.log(err);
