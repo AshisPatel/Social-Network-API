@@ -1,4 +1,5 @@
 const { User, Thought } = require('../models');
+const { getThoughts } = require('./thought-controller');
 
 const userController = {
     getAllUsers(req, res) {
@@ -95,18 +96,32 @@ const userController = {
     //         })
     // },
 
-    deleteUser({ params }, res) {
-        User.findbyIdAndDelete(params.userId)
+    async deleteUser({ params }, res) {
+        let username = "";
+        await User.findById(params.userId).then(dbUserData => { username = dbUserData.username });
+      
+        User.findByIdAndDelete(params.userId)
             .then((dbUserData) => {
                 if (dbUserData) {
-                    const username = dbUserData.username;
-                    return Thought.deleteMany({ username: username })
+                    // delete thoughts and reactions of the associated user
+                    return Thought.deleteMany({ username: username });
+
                 } else {
                     res.status(404).json({ message: "No user found with that id!" });
                 }
             })
-            .then(dbThoughtData => {
-                dbThoughtData && res.status(200).json(dbThoughtData); 
+            .then(dbUserData => {
+                if (dbUserData) {
+                    return Thought.updateMany(
+                        { reactionCount: { $gt: 0 } },
+                        { $pull: { reactions: { username: username } } }
+                    )
+                } else {
+                    return; 
+                }
+            })
+            .then(dbUserData => {
+                res.status(200).json({ message: `${username} has been deleted, along with their thoughts and reactions.`});
             })
             .catch(err => {
                 console.log(err);
