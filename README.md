@@ -36,8 +36,11 @@
   Checkout the video walkthrough at the links below to see the CRUD operations for this project:
 
   Part 1 - [https://watch.screencastify.com/v/X1lOPhJBMfXB1Mk6SOK4](https://watch.screencastify.com/v/X1lOPhJBMfXB1Mk6SOK4)
+  
   Part 2 - [https://watch.screencastify.com/v/Kf8CpmDX5BXB2DAsLpJ3](https://watch.screencastify.com/v/Kf8CpmDX5BXB2DAsLpJ3)
+  
   Part 3 - [https://watch.screencastify.com/v/iCMJ0oOmjicAkS3eyIaE](https://watch.screencastify.com/v/iCMJ0oOmjicAkS3eyIaE)
+  
   Part 4 - [https://watch.screencastify.com/v/qb2staldERzr4eDDp5gE](https://watch.screencastify.com/v/qb2staldERzr4eDDp5gE)
 
   <h2 id="questions">Questions</h2>
