@@ -35,11 +35,7 @@ const userController = {
                 path: 'thoughts',
                 select: '-__v',
                 sort: { _id: -1 }
-            },
-                {
-                    path: 'friends',
-                    select: ('-__v')
-                })
+            })
             .select('-__v')
             .then(dbUserData => {
                 dbUserData ?
@@ -82,33 +78,25 @@ const userController = {
                 res.status(500).json(err);
             })
     },
-    // destructure params object for the userid
-    // deleteUser({ params }, res) {
-    //     User.findByIdAndDelete(params.userId)
-    //         .then(dbUserData => {
-    //             dbUserData ?
-    //                 res.status(200).json(dbUserData) :
-    //                 res.status(404).json({ message: "No user found with that id!" })
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //             res.status(500).json(err);
-    //         })
-    // },
 
     async deleteUser({ params }, res) {
         let username = "";
+        let userId = 0;
         await User.findById(params.userId)
-        .then(dbUserData => { 
-            dbUserData ? 
-            username = dbUserData.username :
-            res.status(404).json({message: "No user with that id exists!" });
-        });
+            .then(dbUserData => {
+                if (dbUserData) {
+                    username = dbUserData.username;
+                    userId = dbUserData._id;
+                    return;
+                } else {
+                    res.status(404).json({ message: "No user with that id exists!" });
+                }
+            });
 
-        if(!username) {
-            return; 
+        if (!username) {
+            return;
         }
-      
+
         User.findByIdAndDelete(params.userId)
             .then((dbUserData) => {
                 if (dbUserData) {
@@ -126,13 +114,24 @@ const userController = {
                         { $pull: { reactions: { username: username } } }
                     )
                 } else {
-                    return; 
+                    return;
                 }
             })
             .then(dbUserData => {
-                dbUserData ? 
-                res.status(200).json({ message: `${username} has been deleted, along with their thoughts and reactions.`}) :
-                res.status(404).json({ message: "No user with that id exists!"}); 
+                // remove user's id from the friends list so that on subsequent post requests, friends do not accumulate
+                if (dbUserData) {
+                    return User.updateMany(
+                        { friendCount: { $gt: 0 } },
+                        { $pull: { friends: userId } }
+                    )
+                } else {
+                    return;
+                }
+            })
+            .then(dbUserData => {
+                dbUserData ?
+                    res.status(200).json({ message: `${username} has been deleted, along with their thoughts and reactions.` }) :
+                    res.status(404).json({ message: "No user with that id exists!" });
             })
             .catch(err => {
                 console.log(err);

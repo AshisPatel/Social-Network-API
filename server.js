@@ -14,6 +14,9 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/social-network-
     useUnifiedTopology: true
 });
 
+// Line below to clear out database if it exists -- comment out if persistence of data is required. 
+// mongoose.connection.dropDatabase();
+
 mongoose.set('debug', true);
 
 app.listen(PORT, () => console.log(`Connected to localhost:${PORT}! (^~^)b`))
