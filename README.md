@@ -44,7 +44,8 @@
   **Fun Fact:** It’s impossible to hum while holding your nose. I would recommend you give it a try! I did after all, please don't let me feel silly and alone. 😔
 
   *I set the friends subdocument's unique property to true and it broke my ability to add any new users. This is kind of how typing those ten characters felt. (Thank goodness this was small scale enough for me to simply drop the database connection to remove that property...)*
-    ![Person throws toy puck at someone else](https://github.com/AshisPatel/Social-Network-API/blob/main/assets/gifs/destroy.gif)
+
+  ![Person throws toy puck at someone else](https://github.com/AshisPatel/Social-Network-API/blob/main/assets/gifs/destroy.gif)
 
 
 
